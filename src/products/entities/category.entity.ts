@@ -3,8 +3,14 @@ import { Document } from "mongoose";
 
 @Schema()
 export class Category extends Document {
-    @Prop({ required: true})
-    name: string;
+    @Prop({ required: true })
+    name: string;   
+
+    @Prop({ required: true })
+    lastName: string;
+
+    @Prop()
+    phone: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

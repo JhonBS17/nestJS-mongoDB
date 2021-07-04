@@ -1,16 +1,22 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema()
 export class Customer extends Document {
-    @Prop()
-    name: string;
+  @Prop({ required: true })
+  name: string;
 
-    @Prop()
-    lastName: string;
+  @Prop({ required: true })
+  lastName: string;
 
-    @Prop() 
-    phone: string;
+  @Prop()
+  phone: string;
+
+  // Array embebido para relacion uno a muchos
+  @Prop({
+    type: [{ name: { type: String }, color: { type: String } }],
+  })
+  skills: Types.Array<Record<string, any>>;
 }
 
 export const CustomerSchema = SchemaFactory.createForClass(Customer);

@@ -3,7 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, FilterQuery } from 'mongoose';
 
 import { Product } from '../entities/product.entity';
-import { CreateProductDto, UpdateProductDto, FilterProductsDto } from '../dtos/products.dtos';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  FilterProductsDto,
+} from '../dtos/products.dtos';
 
 @Injectable()
 export class ProductsService {
@@ -17,11 +21,16 @@ export class ProductsService {
       const { limit, offset } = params;
       const { minPrice, maxPrice } = params;
       if (minPrice && maxPrice) {
-        filters.price = { $gte: minPrice, $lte: maxPrice }
+        filters.price = { $gte: minPrice, $lte: maxPrice };
       }
-      return this.productModel.find(filters).skip(offset*limit).limit(limit).exec();
+      return this.productModel
+        .find(filters)
+        .populate('brand') // Resolver la referencia a Brand
+        .skip(offset * limit)
+        .limit(limit)
+        .exec();
     }
-    return this.productModel.find().exec();
+    return this.productModel.find().populate('brand').exec();
   }
 
   async findOne(id: string) {
@@ -47,7 +56,7 @@ export class ProductsService {
     }
     return product;
   }
-      
+
   remove(id: string) {
     const product = this.productModel.findByIdAndDelete(id);
     if (!product) {
