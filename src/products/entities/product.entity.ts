@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-import { Brand } from "./brand.entity";
+// import { Brand } from "./brand.entity";
 import { SubDoc, SubDocSchema } from './sub-doc.entity';
 
 @Schema()
@@ -14,12 +14,15 @@ export class Product extends Document {
 
   @Prop({ type: Number, index: true }) //Campo prioritario, consultas frecuentes
   price: number;
-  
+    
   @Prop({ type: Number })
   stock: number;
 
   @Prop()
   image: string;
+  
+  @Prop()
+  brand: string;
 
   // Tipado  
   @Prop({ type: SubDocSchema })
